@@ -1,0 +1,12 @@
+{
+  "eslint.validate": ["vue", "javascript", "typescript"],
+  "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always",
+      "source.fixAll.stylelint": "always"
+  },
+  "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+  }
+}
