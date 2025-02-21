@@ -66,10 +66,9 @@ const toggleText = () => {
 @media (hover: hover) {
     .btn:hover {
         cursor: pointer;
-    }
-
-    .arrow-icon-container:hover {
-        background-color: var(--light-gray);
+        .arrow-icon-container {
+            background-color: var(--light-gray);
+        }
     }
 }
 

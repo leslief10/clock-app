@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Button from './components/Button.vue';
 import Quote from './components/Quote.vue';
+import TimeInfo from './components/TimeInfo.vue';
 </script>
 
 <template>
     <Quote />
-    <Button />
+    <TimeInfo />
 </template>
 
 <style scoped></style>
