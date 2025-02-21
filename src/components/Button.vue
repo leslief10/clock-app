@@ -1,36 +1,25 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 
 const text = ref<string>('More');
 
-const arrowPath = computed(() => {
-    return text.value === 'More' ? 'M14 17l6 6 6-6' : 'M14 23l6-6 6 6';
-});
+const toggleText = () => {
+    text.value = text.value === 'More' ? 'Less' : 'More';
+    return text.value;
+};
 </script>
 
 <template>
-    <button
-        type="button"
-        class="btn"
-        @click="text = text === 'More' ? 'Less' : 'More'"
-    >
+    <button type="button" class="btn" @click="toggleText">
         {{ text }}
-        <svg
-            class="arrow-icon"
-            width="40"
-            height="40"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <g fill="none" fill-rule="evenodd">
-                <circle fill="var(--dark-gray)" cx="20" cy="20" r="20" />
-                <path
-                    :d="arrowPath"
-                    stroke="var(--white)"
-                    stroke-width="2"
-                    fill="none"
-                />
-            </g>
-        </svg>
+        <div class="arrow-icon-container">
+            <img
+                src="../assets/mobile/icon-arrow.svg"
+                alt="arrow"
+                class="arrow-icon"
+                :class="{ 'rotate-arrow': text === 'Less' }"
+            />
+        </div>
     </button>
 </template>
 
@@ -39,25 +28,63 @@ const arrowPath = computed(() => {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 12px;
-    width: 146px;
-    height: 56px;
+    gap: 16px;
+    width: 116px;
+    height: 40px;
     padding: 0;
     padding-left: 4px;
     border: none;
     border-radius: 28px;
     font-family: 'Inter', system-ui, sans-serif;
+    font-size: 12px;
     font-weight: 700;
-    font-size: 16px;
-    letter-spacing: 5px;
+    letter-spacing: 3.75px;
     text-transform: uppercase;
     color: var(--light-gray);
     background: var(--white);
 }
 
+.arrow-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--dark-gray);
+}
+
+.arrow-icon {
+    width: auto;
+    height: auto;
+}
+
+.rotate-arrow {
+    transform: rotate(180deg);
+}
+
 @media (hover: hover) {
-    .arrow-icon:hover circle {
-        fill: var(--light-gray);
+    .btn:hover {
+        cursor: pointer;
+    }
+
+    .arrow-icon-container:hover {
+        background-color: var(--light-gray);
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .btn {
+        gap: 12px;
+        width: 146px;
+        height: 56px;
+        font-size: 16px;
+        letter-spacing: 5px;
+    }
+
+    .arrow-icon-container {
+        width: 40px;
+        height: 40px;
     }
 }
 </style>
