@@ -1,27 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import type { TimeData, LocationData } from '../common/types';
 import Button from './Button.vue';
 
-interface TimeData {
-    date: string;
-    dateTime: string;
-    day: number;
-    dayOfWeek: string;
-    dstActive: boolean;
-    hour: number;
-    milliseconds: number;
-    minute: number;
-    month: number;
-    seconds: number;
-    time: string;
-    timeZone: string;
-    year: number;
-}
-
-const greeting = ref<string>('');
 const location = ref<string>('');
 const time = ref<string>('');
 const fullTimeInfo = ref<TimeData | undefined>(undefined);
+const fullLocationInfo = ref<LocationData | undefined>(undefined);
 const userIP = ref<string>('');
 
 const getIP = async (): Promise<string | undefined> => {
@@ -58,6 +43,29 @@ const getTimeInfo = async (): Promise<TimeData | undefined> => {
     }
 };
 
+const getLocation = async (): Promise<LocationData | undefined> => {
+    if (!userIP.value) {
+        await getIP();
+    }
+
+    try {
+        const url = `https://api.ipbase.com/v2/info?ip=${userIP.value}`;
+        const response: Response = await fetch(url, {
+            headers: {
+                'X-API-KEY': import.meta.env.VITE_API_KEY as string
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const data = await response.json();
+        fullLocationInfo.value = data.data.location;
+        return data.data.location;
+    } catch (error: unknown) {
+        console.error('Error fetching location:', error);
+    }
+};
+
 const showTime = async (): Promise<string> => {
     if (!fullTimeInfo.value) {
         await getTimeInfo();
@@ -65,21 +73,109 @@ const showTime = async (): Promise<string> => {
     return (time.value = fullTimeInfo.value?.time ?? '');
 };
 
+const showLocation = async (): Promise<string> => {
+    if (!fullLocationInfo.value) {
+        await getLocation();
+    }
+    return (location.value = `in ${fullLocationInfo.value?.city?.name}, ${fullLocationInfo.value?.country?.alpha2}`);
+};
+
+const getGreetingAndIcon = (
+    hour: number | undefined
+): { greeting: string; icon: string } => {
+    if (hour !== undefined) {
+        if (hour >= 5 && hour < 12) {
+            return {
+                greeting: 'Good Morning',
+                icon: 'src/assets/mobile/icon-sun.svg'
+            };
+        } else if (hour >= 12 && hour < 18) {
+            return {
+                greeting: 'Good Afternoon',
+                icon: 'src/assets/mobile/icon-sun.svg'
+            };
+        } else {
+            return {
+                greeting: 'Good Evening',
+                icon: 'src/assets/mobile/icon-moon.svg'
+            };
+        }
+    } else {
+        return { greeting: 'Hello', icon: 'src/assets/mobile/icon-sun.svg' };
+    }
+};
+
+const showGreeting = computed(() => {
+    const { greeting } = getGreetingAndIcon(fullTimeInfo.value?.hour);
+    return greeting;
+});
+
+const showGreetingIcon = computed(() => {
+    const { icon } = getGreetingAndIcon(fullTimeInfo.value?.hour);
+    return icon;
+});
+
 showTime();
+showLocation();
 </script>
 <template>
     <div class="time-info-container">
         <div class="greeting-container">
             <img
-                src="../assets/mobile/icon-sun.svg"
-                alt="Sun Icon"
+                :src="showGreetingIcon"
+                alt="greeting icon"
                 class="greeting-icon"
             />
-            <p class="greeting-text">{{ greeting }}</p>
+            <p class="font-base greeting-text">{{ showGreeting }}</p>
         </div>
-        <p class="time-text">{{ time }}</p>
-        <p class="location-text">{{ location }}</p>
-        <Button />
+        <p class="font-base time-text">{{ time }}</p>
+        <p class="font-base location-text">{{ location }}</p>
     </div>
+    <Button />
 </template>
-<style scoped></style>
+<style scoped>
+.time-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-inline: 24px;
+}
+
+.greeting-container {
+    display: flex;
+    gap: 16px;
+}
+
+.font-base {
+    font-family: 'Inter', system-ui, sans-serif;
+    text-align: left;
+    color: var(--white);
+}
+
+.greeting-text {
+    font-size: 16px;
+    letter-spacing: 3px;
+    line-height: 25px;
+    text-transform: uppercase;
+}
+
+.greeting-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.time-text {
+    font-size: 100px;
+    font-weight: 700;
+    letter-spacing: -2.5px;
+    line-height: 100px;
+}
+
+.location-text {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    line-height: 28px;
+    text-transform: uppercase;
+}
+</style>

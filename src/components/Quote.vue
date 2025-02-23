@@ -1,16 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-
-interface QuoteData {
-    readonly author: string;
-    readonly authorSlug: string;
-    readonly content: string;
-    readonly dateAdded: string;
-    readonly dateModified: string;
-    readonly length: number;
-    readonly tags: string[];
-    readonly _id: string;
-}
+import type { QuoteData } from '../common/types';
 
 const quote = ref<string>('');
 const author = ref<string>('');
@@ -36,8 +26,8 @@ getQuote();
 
 <template>
     <div class="text-quote-container">
-        <p class="text-font-base text-quote">{{ quote }}</p>
-        <p class="text-font-base text-author">{{ author }}</p>
+        <p class="font-base text-quote">{{ quote }}</p>
+        <p class="font-base text-author">{{ author }}</p>
         <button class="refresh-quote" @click="getQuote">
             <img
                 src="../assets/mobile/icon-refresh.svg"
@@ -55,11 +45,10 @@ getQuote();
     grid-template-rows: repeat(4, auto);
     grid-template-areas: 'quote quote quote refresh' 'quote quote quote .' 'quote quote quote .' 'author author author .';
     max-height: 100px;
-    /* add 0px to bottom */
-    margin: 32px 24px;
+    margin: 32px 24px 0px;
 }
 
-.text-font-base {
+.font-base {
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 12px;
     line-height: 22px;
@@ -98,11 +87,10 @@ getQuote();
     .text-quote-container {
         max-width: 572px;
         max-height: 125px;
-        /* remove the 80px bottom */
-        margin: 80px 130px 80px 64px;
+        margin: 80px 130px 0 64px;
     }
 
-    .text-font-base {
+    .font-base {
         font-size: 18px;
         line-height: 28px;
     }
