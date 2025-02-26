@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { TimeData, LocationData } from '../common/types';
-import Button from './Button.vue';
 
 const location = ref<string>('');
 const time = ref<string>('');
@@ -126,19 +125,19 @@ showLocation();
                 alt="greeting icon"
                 class="greeting-icon"
             />
-            <p class="font-base greeting-text">{{ showGreeting }}</p>
+            <p class="font-base second-font-base greeting-text">
+                {{ showGreeting }}
+            </p>
         </div>
         <p class="font-base time-text">{{ time }}</p>
-        <p class="font-base location-text">{{ location }}</p>
+        <p class="font-base second-font-base location-text">{{ location }}</p>
     </div>
-    <Button />
 </template>
 <style scoped>
 .time-info-container {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin-inline: 24px;
 }
 
 .greeting-container {
@@ -152,11 +151,15 @@ showLocation();
     color: var(--white);
 }
 
-.greeting-text {
+.second-font-base {
     font-size: 16px;
     letter-spacing: 3px;
     line-height: 25px;
     text-transform: uppercase;
+}
+
+.greeting-text {
+    font-weight: 400;
 }
 
 .greeting-icon {
@@ -172,10 +175,44 @@ showLocation();
 }
 
 .location-text {
-    font-size: 16px;
     font-weight: 700;
-    letter-spacing: 3px;
-    line-height: 28px;
-    text-transform: uppercase;
+}
+
+@media screen and (min-width: 768px) {
+    .time-info-container {
+        max-width: 539px;
+        gap: 0;
+    }
+
+    .second-font-base {
+        font-size: 18px;
+        line-height: 28px;
+        letter-spacing: 3.6px;
+    }
+
+    .time-text {
+        font-size: 175px;
+        line-height: 175px;
+        letter-spacing: -4.38px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .second-font-base {
+        font-size: 20px;
+        line-height: 28px;
+        letter-spacing: 4px;
+    }
+
+    .time-text {
+        font-size: 200px;
+        line-height: 200px;
+        letter-spacing: -5px;
+    }
+
+    .location-text {
+        font-size: 24px;
+        letter-spacing: 4.8px;
+    }
 }
 </style>

@@ -45,7 +45,6 @@ getQuote();
     grid-template-rows: repeat(4, auto);
     grid-template-areas: 'quote quote quote refresh' 'quote quote quote .' 'quote quote quote .' 'author author author .';
     max-height: 100px;
-    margin: 32px 24px 0px;
 }
 
 .font-base {
@@ -87,7 +86,6 @@ getQuote();
     .text-quote-container {
         max-width: 572px;
         max-height: 125px;
-        margin: 80px 130px 0 64px;
     }
 
     .font-base {

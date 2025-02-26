@@ -21,3 +21,24 @@ html {
 a {
   text-decoration: none;
 }
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 32px 24px;
+}
+
+@media screen and (min-width: 768px) {
+  #app {
+    padding: 80px 0 64px 64px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  #app {
+    padding: 56px 0 98px 165px;
+  }
+}
