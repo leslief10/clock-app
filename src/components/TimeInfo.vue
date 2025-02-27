@@ -1,83 +1,21 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed, inject } from 'vue';
+import type { Ref } from 'vue';
+import { TimeDataKey, LocationDataKey } from '../common/injectionKeys';
 import type { TimeData, LocationData } from '../common/types';
 
-const location = ref<string>('');
-const time = ref<string>('');
-const fullTimeInfo = ref<TimeData | undefined>(undefined);
-const fullLocationInfo = ref<LocationData | undefined>(undefined);
-const userIP = ref<string>('');
+const fullTimeInfo = inject<Ref<TimeData | undefined>>(TimeDataKey);
+const fullLocationInfo = inject<Ref<LocationData | undefined>>(LocationDataKey);
 
-const getIP = async (): Promise<string | undefined> => {
-    const url = 'https://api.ipify.org?format=json';
-    try {
-        const response: Response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-        }
-        const { ip }: { ip: string } = await response.json();
-        userIP.value = ip;
-        return userIP.value;
-    } catch (error: unknown) {
-        console.error('Error fetching IP:', error);
-    }
-};
+const showTime = computed(() => {
+    const time = fullTimeInfo?.value?.time ?? '';
+    return time;
+});
 
-const getTimeInfo = async (): Promise<TimeData | undefined> => {
-    if (!userIP.value) {
-        await getIP();
-    }
-
-    try {
-        const url = `https://timeapi.io/api/time/current/ip?ipAddress=${userIP.value}`;
-        const response: Response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-        }
-        const data: TimeData = await response.json();
-        fullTimeInfo.value = data;
-        return data;
-    } catch (error: unknown) {
-        console.error('Error fetching time info:', error);
-    }
-};
-
-const getLocation = async (): Promise<LocationData | undefined> => {
-    if (!userIP.value) {
-        await getIP();
-    }
-
-    try {
-        const url = `https://api.ipbase.com/v2/info?ip=${userIP.value}`;
-        const response: Response = await fetch(url, {
-            headers: {
-                'X-API-KEY': import.meta.env.VITE_API_KEY as string
-            }
-        });
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-        }
-        const data = await response.json();
-        fullLocationInfo.value = data.data.location;
-        return data.data.location;
-    } catch (error: unknown) {
-        console.error('Error fetching location:', error);
-    }
-};
-
-const showTime = async (): Promise<string> => {
-    if (!fullTimeInfo.value) {
-        await getTimeInfo();
-    }
-    return (time.value = fullTimeInfo.value?.time ?? '');
-};
-
-const showLocation = async (): Promise<string> => {
-    if (!fullLocationInfo.value) {
-        await getLocation();
-    }
-    return (location.value = `in ${fullLocationInfo.value?.city?.name}, ${fullLocationInfo.value?.country?.alpha2}`);
-};
+const showLocation = computed(() => {
+    const location = `in ${fullLocationInfo?.value?.city?.name ?? ''}, ${fullLocationInfo?.value?.country?.alpha2 ?? ''}`;
+    return location;
+});
 
 const getGreetingAndIcon = (
     hour: number | undefined
@@ -100,22 +38,19 @@ const getGreetingAndIcon = (
             };
         }
     } else {
-        return { greeting: 'Hello', icon: 'src/assets/mobile/icon-sun.svg' };
+        return { greeting: '', icon: '' };
     }
 };
 
 const showGreeting = computed(() => {
-    const { greeting } = getGreetingAndIcon(fullTimeInfo.value?.hour);
+    const { greeting } = getGreetingAndIcon(fullTimeInfo?.value?.hour);
     return greeting;
 });
 
 const showGreetingIcon = computed(() => {
-    const { icon } = getGreetingAndIcon(fullTimeInfo.value?.hour);
+    const { icon } = getGreetingAndIcon(fullTimeInfo?.value?.hour);
     return icon;
 });
-
-showTime();
-showLocation();
 </script>
 <template>
     <div class="time-info-container">
@@ -129,8 +64,10 @@ showLocation();
                 {{ showGreeting }}
             </p>
         </div>
-        <p class="font-base time-text">{{ time }}</p>
-        <p class="font-base second-font-base location-text">{{ location }}</p>
+        <p class="font-base time-text">{{ showTime }}</p>
+        <p class="font-base second-font-base location-text">
+            {{ showLocation }}
+        </p>
     </div>
 </template>
 <style scoped>
