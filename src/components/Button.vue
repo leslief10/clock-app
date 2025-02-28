@@ -2,19 +2,26 @@
 import { ref } from 'vue';
 
 const text = ref<string>('More');
+const toggleVisibility = ref<boolean>(false);
 
-const toggleText = () => {
+const emit = defineEmits<{
+    (e: 'update:toggle', value: boolean): void;
+}>();
+
+const handleToggle = (): { text: string; toggle: boolean } => {
+    toggleVisibility.value = !toggleVisibility.value;
     text.value = text.value === 'More' ? 'Less' : 'More';
-    return text.value;
+    emit('update:toggle', toggleVisibility.value);
+    return { text: text.value, toggle: toggleVisibility.value };
 };
 </script>
 
 <template>
-    <button type="button" class="btn" @click="toggleText">
+    <button type="button" class="btn" @click="handleToggle">
         {{ text }}
         <div class="arrow-icon-container">
             <img
-                src="../assets/mobile/icon-arrow.svg"
+                src="../assets/desktop/icon-arrow.svg"
                 alt="arrow"
                 class="arrow-icon"
                 :class="{ 'rotate-arrow': text === 'Less' }"

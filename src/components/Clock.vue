@@ -22,20 +22,35 @@ const getGreetingAndIcon = (
 ): { greeting: string; icon: string } => {
     if (hour !== undefined) {
         if (hour >= 5 && hour < 12) {
-            return {
-                greeting: 'Good Morning',
-                icon: 'src/assets/mobile/icon-sun.svg'
-            };
+            return window.innerWidth >= 768
+                ? {
+                      greeting: `Good Morning, it's currently`,
+                      icon: 'src/assets/desktop/icon-sun.svg'
+                  }
+                : {
+                      greeting: 'Good Morning',
+                      icon: 'src/assets/desktop/icon-sun.svg'
+                  };
         } else if (hour >= 12 && hour < 18) {
-            return {
-                greeting: 'Good Afternoon',
-                icon: 'src/assets/mobile/icon-sun.svg'
-            };
+            return window.innerWidth >= 768
+                ? {
+                      greeting: `Good Afternoon, it's currently`,
+                      icon: 'src/assets/desktop/icon-sun.svg'
+                  }
+                : {
+                      greeting: 'Good Afternoon',
+                      icon: 'src/assets/desktop/icon-sun.svg'
+                  };
         } else {
-            return {
-                greeting: 'Good Evening',
-                icon: 'src/assets/mobile/icon-moon.svg'
-            };
+            return window.innerWidth >= 768
+                ? {
+                      greeting: `Good Evening, it's currently`,
+                      icon: 'src/assets/desktop/icon-moon.svg'
+                  }
+                : {
+                      greeting: 'Good Evening',
+                      icon: 'src/assets/desktop/icon-moon.svg'
+                  };
         }
     } else {
         return { greeting: '', icon: '' };
@@ -64,7 +79,11 @@ const showGreetingIcon = computed(() => {
                 {{ showGreeting }}
             </p>
         </div>
-        <p class="font-base time-text">{{ showTime }}</p>
+        <p class="font-base time-text">
+            <time :datetime="showTime">
+                {{ showTime }}
+            </time>
+        </p>
         <p class="font-base second-font-base location-text">
             {{ showLocation }}
         </p>

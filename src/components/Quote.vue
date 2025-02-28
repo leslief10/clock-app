@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import type { QuoteData } from '../common/types';
+import { toggleVisibilityKey } from '../common/injectionKeys';
 
 const quote = ref<string>('');
 const author = ref<string>('');
+const toggleVisibility = inject<boolean>(toggleVisibilityKey);
 
 const getQuote = async (): Promise<QuoteData | undefined> => {
     const url = 'http://api.quotable.io/quotes/random';
@@ -25,12 +27,12 @@ getQuote();
 </script>
 
 <template>
-    <div class="text-quote-container">
+    <div v-if="!toggleVisibility" class="text-quote-container">
         <p class="font-base text-quote">{{ quote }}</p>
         <p class="font-base text-author">{{ author }}</p>
         <button class="refresh-quote" @click="getQuote">
             <img
-                src="../assets/mobile/icon-refresh.svg"
+                src="../assets/desktop/icon-refresh.svg"
                 alt="refresh quote"
                 class="refresh-icon"
             />
@@ -45,6 +47,7 @@ getQuote();
     grid-template-rows: repeat(4, auto);
     grid-template-areas: 'quote quote quote refresh' 'quote quote quote .' 'quote quote quote .' 'author author author .';
     max-height: 100px;
+    padding: 32px 24px 0;
 }
 
 .font-base {

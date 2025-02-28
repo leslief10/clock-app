@@ -1,17 +1,24 @@
 <script setup lang="ts">
 import { ref, provide } from 'vue';
 import Quote from './components/Quote.vue';
-import TimeInfo from './components/TimeInfo.vue';
+import Clock from './components/Clock.vue';
 import Button from './components/Button.vue';
-import { TimeDataKey, LocationDataKey } from './common/injectionKeys';
+import Details from './components/Details.vue';
+import {
+    TimeDataKey,
+    LocationDataKey,
+    toggleVisibilityKey
+} from './common/injectionKeys';
 import type { TimeData, LocationData } from './common/types';
 
 const userIP = ref<string>('');
 const timeObject = ref<TimeData | undefined>(undefined);
 const locationObject = ref<LocationData | undefined>(undefined);
+const toggleVisibility = ref<boolean>(false);
 
 provide(TimeDataKey, timeObject);
 provide(LocationDataKey, locationObject);
+provide(toggleVisibilityKey, toggleVisibility);
 
 const getIP = async (): Promise<string | undefined> => {
     const url = 'https://api.ipify.org?format=json';
@@ -28,7 +35,7 @@ const getIP = async (): Promise<string | undefined> => {
     }
 };
 
-const getTimeInfo = async (): Promise<TimeData | undefined> => {
+const getTime = async (): Promise<TimeData | undefined> => {
     if (!userIP.value) {
         await getIP();
     }
@@ -70,7 +77,12 @@ const getLocation = async (): Promise<LocationData | undefined> => {
     }
 };
 
-getTimeInfo();
+const handleToggle = (value: boolean) => {
+    console.log('toggle', toggleVisibility.value);
+    toggleVisibility.value = value;
+};
+
+getTime();
 getLocation();
 </script>
 
@@ -84,10 +96,14 @@ getLocation();
         "
     >
         <Quote />
-        <div class="clock-container">
-            <TimeInfo />
-            <Button />
+        <div
+            class="clock-container"
+            :class="toggleVisibility ? 'clock-container-update' : ''"
+        >
+            <Clock />
+            <Button @update:toggle="handleToggle" />
         </div>
+        <Details />
     </div>
 </template>
 
@@ -98,7 +114,7 @@ getLocation();
     align-items: flex-start;
     justify-content: space-between;
     height: 100vh;
-    padding: 32px 24px;
+    /* padding: 32px 24px; */
 }
 
 .day-background {
@@ -121,11 +137,17 @@ getLocation();
     display: flex;
     flex-direction: column;
     gap: 48px;
+    width: 100%;
+    padding: 0 24px 32px;
+}
+
+.clock-container-update {
+    padding: 32px 24px 0;
 }
 
 @media screen and (min-width: 768px) {
     .app-container {
-        padding: 80px 0 64px 64px;
+        /* padding: 80px 0 64px 64px; */
     }
 
     .clock-container {
@@ -136,7 +158,7 @@ getLocation();
 
 @media screen and (min-width: 1024px) {
     .app-container {
-        padding: 56px 0 98px 165px;
+        /* padding: 56px 0 98px 165px; */
     }
 
     .clock-container {
