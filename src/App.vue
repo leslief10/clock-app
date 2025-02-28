@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, provide } from 'vue';
+import { ref, provide, computed } from 'vue';
 import Quote from './components/Quote.vue';
 import Clock from './components/Clock.vue';
 import Button from './components/Button.vue';
@@ -78,9 +78,16 @@ const getLocation = async (): Promise<LocationData | undefined> => {
 };
 
 const handleToggle = (value: boolean) => {
-    console.log('toggle', toggleVisibility.value);
     toggleVisibility.value = value;
 };
+
+const backgroundClass = computed(() => {
+    const hour = timeObject.value?.hour;
+
+    if (hour === undefined) return 'no-background';
+    if (hour >= 5 && hour < 18) return 'day-background';
+    return 'night-background';
+});
 
 getTime();
 getLocation();
@@ -89,11 +96,7 @@ getLocation();
 <template>
     <div
         class="app-container"
-        :class="
-            (timeObject?.hour ?? 0) >= 5 && (timeObject?.hour ?? 0) < 18
-                ? 'day-background'
-                : 'night-background'
-        "
+        :class="[backgroundClass, { 'details-visible': toggleVisibility }]"
     >
         <Quote />
         <div
@@ -114,7 +117,14 @@ getLocation();
     align-items: flex-start;
     justify-content: space-between;
     height: 100vh;
-    /* padding: 32px 24px; */
+}
+
+.details-visible {
+    justify-content: flex-end;
+}
+
+.no-background {
+    background-color: darkgray;
 }
 
 .day-background {
@@ -123,14 +133,15 @@ getLocation();
     background-blend-mode: darken;
     background-color: silver;
     background-size: cover;
+    background-blend-mode: multiply;
 }
 
 .night-background {
     background: no-repeat bottom
         url('/src/assets/tablet/bg-image-nighttime.jpg');
-    background-blend-mode: multiply;
     background-color: darkgray;
     background-size: cover;
+    background-blend-mode: multiply;
 }
 
 .clock-container {
@@ -142,27 +153,21 @@ getLocation();
 }
 
 .clock-container-update {
-    padding: 32px 24px 0;
+    padding: 32px 24px 40px;
 }
 
 @media screen and (min-width: 768px) {
-    .app-container {
-        /* padding: 80px 0 64px 64px; */
-    }
-
     .clock-container {
         gap: 80px;
         max-width: 500px;
+        padding: 0 0 64px 64px;
     }
 }
 
 @media screen and (min-width: 1024px) {
-    .app-container {
-        /* padding: 56px 0 98px 165px; */
-    }
-
     .clock-container {
         max-width: 100%;
+        padding: 0 0 98px 165px;
     }
 
     .day-background {
@@ -185,6 +190,10 @@ getLocation();
         flex-direction: row;
         align-items: flex-end;
         gap: 345px;
+    }
+
+    .clock-container-update {
+        padding: 108px 0 56px 165px;
     }
 }
 </style>

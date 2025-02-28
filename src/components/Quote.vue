@@ -27,7 +27,7 @@ getQuote();
 </script>
 
 <template>
-    <div v-if="!toggleVisibility" class="text-quote-container">
+    <div v-show="!toggleVisibility" class="text-quote-container">
         <p class="font-base text-quote">{{ quote }}</p>
         <p class="font-base text-author">{{ author }}</p>
         <button class="refresh-quote" @click="getQuote">
@@ -51,7 +51,6 @@ getQuote();
 }
 
 .font-base {
-    font-family: 'Inter', system-ui, sans-serif;
     font-size: 12px;
     line-height: 22px;
     text-align: left;
@@ -89,6 +88,7 @@ getQuote();
     .text-quote-container {
         max-width: 572px;
         max-height: 125px;
+        padding: 80px 0 0 64px;
     }
 
     .font-base {
@@ -102,6 +102,18 @@ getQuote();
 
     .refresh-quote {
         margin-top: 4px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .text-quote-container {
+        padding: 56px 0 0 165px;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .text-quote-container {
+        padding: 108px 0 0 165px;
     }
 }
 </style>

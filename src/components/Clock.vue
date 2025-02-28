@@ -102,7 +102,6 @@ const showGreetingIcon = computed(() => {
 }
 
 .font-base {
-    font-family: 'Inter', system-ui, sans-serif;
     text-align: left;
     color: var(--white);
 }
