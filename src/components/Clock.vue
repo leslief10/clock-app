@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue';
 import type { Ref } from 'vue';
+import sunIcon from '../assets/desktop/icon-sun.svg';
+import moonIcon from '../assets/desktop/icon-moon.svg';
 import { TimeDataKey, LocationDataKey } from '../common/injectionKeys';
 import type { TimeData, LocationData } from '../common/types';
 
@@ -25,31 +27,31 @@ const getGreetingAndIcon = (
             return window.innerWidth >= 768
                 ? {
                       greeting: `Good Morning, it's currently`,
-                      icon: 'src/assets/desktop/icon-sun.svg'
+                      icon: `${sunIcon}`
                   }
                 : {
                       greeting: 'Good Morning',
-                      icon: 'src/assets/desktop/icon-sun.svg'
+                      icon: `${sunIcon}`
                   };
         } else if (hour >= 12 && hour < 18) {
             return window.innerWidth >= 768
                 ? {
                       greeting: `Good Afternoon, it's currently`,
-                      icon: 'src/assets/desktop/icon-sun.svg'
+                      icon: `${sunIcon}`
                   }
                 : {
                       greeting: 'Good Afternoon',
-                      icon: 'src/assets/desktop/icon-sun.svg'
+                      icon: `${sunIcon}`
                   };
         } else {
             return window.innerWidth >= 768
                 ? {
                       greeting: `Good Evening, it's currently`,
-                      icon: 'src/assets/desktop/icon-moon.svg'
+                      icon: `${moonIcon}`
                   }
                 : {
                       greeting: 'Good Evening',
-                      icon: 'src/assets/desktop/icon-moon.svg'
+                      icon: `${moonIcon}`
                   };
         }
     } else {
@@ -159,15 +161,17 @@ const showGreetingIcon = computed(() => {
         letter-spacing: 4px;
     }
 
+    .location-text {
+        font-size: 24px;
+        letter-spacing: 4.8px;
+    }
+}
+
+@media screen and (min-width: 1440px) {
     .time-text {
         font-size: 200px;
         line-height: 200px;
         letter-spacing: -5px;
-    }
-
-    .location-text {
-        font-size: 24px;
-        letter-spacing: 4.8px;
     }
 }
 </style>

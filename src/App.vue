@@ -166,8 +166,9 @@ getLocation();
 
 @media screen and (min-width: 1024px) {
     .clock-container {
+        gap: 30px;
         max-width: 100%;
-        padding: 0 0 98px 165px;
+        padding: 0 0 20px 165px;
     }
 
     .day-background {
