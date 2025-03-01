@@ -35,17 +35,17 @@ const handleToggle = (): { text: string; toggle: boolean } => {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 16px;
-    width: 116px;
-    height: 40px;
+    gap: 1rem;
+    width: 7.25rem;
+    height: 2.5rem;
     padding: 0;
-    padding-left: 4px;
+    padding-left: 0.25rem;
     border: none;
-    border-radius: 28px;
+    border-radius: 1.75rem;
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 3.75px;
+    letter-spacing: 0.25rem;
     text-transform: uppercase;
     color: var(--light-gray);
     background: var(--white);
@@ -55,8 +55,8 @@ const handleToggle = (): { text: string; toggle: boolean } => {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 32px;
-    height: 32px;
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
     background-color: var(--dark-gray);
 }
@@ -81,16 +81,15 @@ const handleToggle = (): { text: string; toggle: boolean } => {
 
 @media screen and (min-width: 768px) {
     .btn {
-        gap: 12px;
-        width: 146px;
-        height: 56px;
-        font-size: 16px;
-        letter-spacing: 5px;
+        gap: 0.75rem;
+        width: 9.25rem;
+        height: 3.5rem;
+        font-size: 1rem;
     }
 
     .arrow-icon-container {
-        width: 40px;
-        height: 40px;
+        width: 2.5rem;
+        height: 2.5rem;
     }
 }
 </style>

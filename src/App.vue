@@ -147,28 +147,36 @@ getLocation();
 .clock-container {
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 3rem;
     width: 100%;
-    padding: 0 24px 32px;
+    padding: 0 1.5rem 2rem;
 }
 
 .clock-container-update {
-    padding: 32px 24px 40px;
+    padding: 2rem 1.5rem 2.5rem;
 }
 
 @media screen and (min-width: 768px) {
     .clock-container {
-        gap: 80px;
-        max-width: 500px;
-        padding: 0 0 64px 64px;
+        gap: 5rem;
+        padding: 0 4rem 5rem;
+    }
+
+    .clock-container-update {
+        padding: 5rem 4rem;
     }
 }
 
 @media screen and (min-width: 1024px) {
     .clock-container {
-        gap: 30px;
-        max-width: 100%;
-        padding: 0 0 20px 165px;
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 0;
+        padding: 0 6rem 3.5rem;
+    }
+
+    .clock-container-update {
+        padding: 3.5rem 6rem;
     }
 
     .day-background {
@@ -188,13 +196,11 @@ getLocation();
 
 @media screen and (min-width: 1440px) {
     .clock-container {
-        flex-direction: row;
-        align-items: flex-end;
-        gap: 345px;
+        padding: 0 10rem 6.75rem;
     }
 
     .clock-container-update {
-        padding: 108px 0 56px 165px;
+        padding: 6.75rem 10rem;
     }
 }
 </style>

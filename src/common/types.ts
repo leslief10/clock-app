@@ -65,3 +65,8 @@ export interface LocationData {
     readonly region: object;
     readonly zip: string;
 }
+
+export interface GreetingConfig {
+    greeting: string;
+    icon: string;
+}

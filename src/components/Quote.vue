@@ -27,9 +27,11 @@ getQuote();
 </script>
 
 <template>
-    <div v-show="!toggleVisibility" class="text-quote-container">
-        <p class="font-base text-quote">{{ quote }}</p>
-        <p class="font-base text-author">{{ author }}</p>
+    <div v-show="!toggleVisibility" class="quote-container">
+        <div class="text-quote-container">
+            <p class="font-base text-quote">{{ quote }}</p>
+            <p class="font-base text-author">{{ author }}</p>
+        </div>
         <button class="refresh-quote" @click="getQuote">
             <img
                 src="../assets/desktop/icon-refresh.svg"
@@ -41,38 +43,40 @@ getQuote();
 </template>
 
 <style scoped>
+.quote-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1rem;
+    width: 100%;
+    padding: 2rem 1.5rem 0;
+}
+
 .text-quote-container {
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    grid-template-rows: repeat(4, auto);
-    grid-template-areas: 'quote quote quote refresh' 'quote quote quote .' 'quote quote quote .' 'author author author .';
-    max-height: 100px;
-    padding: 32px 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .font-base {
-    font-size: 12px;
-    line-height: 22px;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
     text-align: left;
     color: var(--white);
 }
 
 .text-quote {
-    grid-area: quote;
-    margin-right: 16px;
     font-weight: 400;
 }
 
 .text-author {
-    grid-area: author;
-    margin-top: 8px;
     font-weight: 700;
 }
 
 .refresh-quote {
-    grid-area: refresh;
+    justify-self: flex-start;
     padding: 0;
-    margin-top: 2px;
+    margin-top: 0.25rem;
     background-color: transparent;
     border: none;
 }
@@ -85,35 +89,29 @@ getQuote();
 }
 
 @media screen and (min-width: 768px) {
+    .quote-container {
+        padding: 5rem 4rem 0;
+    }
+
     .text-quote-container {
-        max-width: 572px;
-        max-height: 125px;
-        padding: 80px 0 0 64px;
+        gap: 1rem;
     }
 
     .font-base {
-        font-size: 18px;
-        line-height: 28px;
-    }
-
-    .text-author {
-        margin-top: 16px;
-    }
-
-    .refresh-quote {
-        margin-top: 4px;
+        font-size: 1.25rem;
+        line-height: 1.75rem;
     }
 }
 
 @media screen and (min-width: 1024px) {
-    .text-quote-container {
-        padding: 56px 0 0 165px;
+    .quote-container {
+        padding: 3.5rem 6rem 0;
     }
 }
 
 @media screen and (min-width: 1440px) {
-    .text-quote-container {
-        padding: 108px 0 0 165px;
+    .quote-container {
+        padding: 6.75rem 10rem 0;
     }
 }
 </style>

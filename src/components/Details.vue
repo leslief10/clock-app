@@ -95,9 +95,9 @@ const backgroundClass = computed(() => {
 .details-container {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 1rem;
     width: 100%;
-    padding: 48px 26px;
+    padding: 3rem 1.5rem;
     backdrop-filter: blur(40.77px);
 }
 
@@ -112,22 +112,23 @@ const backgroundClass = computed(() => {
 .details {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
 }
 
 .details-description {
-    font-size: 10px;
+    font-size: 0.5rem;
     font-weight: 400;
-    line-height: 28px;
-    letter-spacing: 2px;
+    line-height: 1.75rem;
+    letter-spacing: 0.25rem;
     text-align: left;
     text-transform: uppercase;
 }
 
 .details-info {
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 700;
-    line-height: 24px;
+    line-height: 1.5rem;
     text-align: right;
 }
 
@@ -142,56 +143,39 @@ const backgroundClass = computed(() => {
 @media screen and (min-width: 768px) {
     .details-container {
         flex-wrap: wrap;
-        flex-direction: row;
         justify-content: space-between;
-        gap: 24px;
-        padding: 120px 166px 120px 64px;
-        max-height: 440px;
+        gap: 1.5rem;
+        padding: 7.5rem 4rem;
+        max-height: 27.5rem;
     }
 
     .details {
         flex-direction: column;
     }
 
-    .details:last-of-type {
-        min-width: 28%;
-    }
-
     .details-description {
-        font-size: 13px;
-        letter-spacing: 2.6px;
+        font-size: 0.75rem;
     }
 
     .details-info {
-        font-size: 40px;
-        line-height: 48px;
+        font-size: 2.5rem;
+        line-height: 3rem;
         text-align: left;
     }
 }
 
 @media screen and (min-width: 1024px) {
     .details-container {
-        gap: 24px 44px;
-        max-height: 400px;
-        padding: 74px 165px;
-    }
-
-    .details:last-of-type {
-        min-width: 22%;
+        flex-direction: row;
+        gap: 1.5rem 2.75rem;
+        max-height: 25rem;
+        padding: 3.5rem 6rem;
     }
 }
 
 @media screen and (min-width: 1440px) {
     .details-container {
-        padding: 54px 340px 54px 165px;
-    }
-
-    .details:first-of-type {
-        min-width: 70%;
-    }
-
-    .details:last-of-type {
-        min-width: 15%;
+        padding: 3.5rem 10rem;
     }
 }
 </style>

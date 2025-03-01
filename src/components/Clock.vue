@@ -4,7 +4,7 @@ import type { Ref } from 'vue';
 import sunIcon from '../assets/desktop/icon-sun.svg';
 import moonIcon from '../assets/desktop/icon-moon.svg';
 import { TimeDataKey, LocationDataKey } from '../common/injectionKeys';
-import type { TimeData, LocationData } from '../common/types';
+import type { TimeData, LocationData, GreetingConfig } from '../common/types';
 
 const fullTimeInfo = inject<Ref<TimeData | undefined>>(TimeDataKey);
 const fullLocationInfo = inject<Ref<LocationData | undefined>>(LocationDataKey);
@@ -19,9 +19,7 @@ const showLocation = computed(() => {
     return location;
 });
 
-const getGreetingAndIcon = (
-    hour: number | undefined
-): { greeting: string; icon: string } => {
+const getGreetingAndIcon = (hour: number | undefined): GreetingConfig => {
     if (hour !== undefined) {
         if (hour >= 5 && hour < 12) {
             return window.innerWidth >= 768
@@ -95,12 +93,13 @@ const showGreetingIcon = computed(() => {
 .time-info-container {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 1rem;
+    width: 100%;
 }
 
 .greeting-container {
     display: flex;
-    gap: 16px;
+    gap: 1rem;
 }
 
 .font-base {
@@ -109,9 +108,9 @@ const showGreetingIcon = computed(() => {
 }
 
 .second-font-base {
-    font-size: 16px;
-    letter-spacing: 3px;
-    line-height: 25px;
+    font-size: 1rem;
+    letter-spacing: 0.25rem;
+    line-height: 1.5rem;
     text-transform: uppercase;
 }
 
@@ -120,15 +119,15 @@ const showGreetingIcon = computed(() => {
 }
 
 .greeting-icon {
-    width: 24px;
-    height: 24px;
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 .time-text {
-    font-size: 100px;
+    font-size: 6.25rem;
     font-weight: 700;
-    letter-spacing: -2.5px;
-    line-height: 100px;
+    letter-spacing: -0.25rem;
+    line-height: 6.25rem;
 }
 
 .location-text {
@@ -137,41 +136,31 @@ const showGreetingIcon = computed(() => {
 
 @media screen and (min-width: 768px) {
     .time-info-container {
-        max-width: 539px;
         gap: 0;
     }
 
     .second-font-base {
-        font-size: 18px;
-        line-height: 28px;
-        letter-spacing: 3.6px;
+        font-size: 1.25rem;
+        line-height: 1.75rem;
     }
 
     .time-text {
-        font-size: 175px;
-        line-height: 175px;
-        letter-spacing: -4.38px;
+        font-size: 11rem;
+        line-height: 11rem;
     }
 }
 
 @media screen and (min-width: 1024px) {
-    .second-font-base {
-        font-size: 20px;
-        line-height: 28px;
-        letter-spacing: 4px;
-    }
-
     .location-text {
-        font-size: 24px;
-        letter-spacing: 4.8px;
+        font-size: 1.5rem;
+        letter-spacing: 0.5rem;
     }
 }
 
 @media screen and (min-width: 1440px) {
     .time-text {
-        font-size: 200px;
-        line-height: 200px;
-        letter-spacing: -5px;
+        font-size: 12.5rem;
+        line-height: 12.5rem;
     }
 }
 </style>
