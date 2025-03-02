@@ -1,26 +1,18 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue';
-import type { QuoteData } from '../common/types';
+import { quotes } from '../data/quotes';
 import { toggleVisibilityKey } from '../common/injectionKeys';
 
 const quote = ref<string>('');
 const author = ref<string>('');
 const toggleVisibility = inject<boolean>(toggleVisibilityKey);
 
-const getQuote = async (): Promise<QuoteData | undefined> => {
-    const url = 'http://api.quotable.io/quotes/random';
-    try {
-        const response: Response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-        }
-        const [data]: [QuoteData] = await response.json();
-        quote.value = data.content;
-        author.value = data.author;
-        return data;
-    } catch (error: unknown) {
-        console.error('Error fetching quote:', error);
-    }
+const getQuote = (): [string, string] => {
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const data = quotes[randomIndex];
+    quote.value = data.text;
+    author.value = data.author;
+    return [data.text, data.author];
 };
 
 getQuote();

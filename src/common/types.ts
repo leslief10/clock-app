@@ -1,12 +1,10 @@
-export interface QuoteData {
+export interface Quote {
+    readonly _id: {
+        readonly $oid: string;
+    };
+    readonly text: string;
     readonly author: string;
-    readonly authorSlug: string;
-    readonly content: string;
-    readonly dateAdded: string;
-    readonly dateModified: string;
-    readonly length: number;
-    readonly tags: string[];
-    readonly _id: string;
+    readonly source?: string;
 }
 
 export interface TimeData {

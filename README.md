@@ -27,8 +27,7 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Live Site URL: [Clock App](https://leslief10.github.io/clock-app/)
 
 ## My process
 
@@ -51,7 +50,9 @@ I've worked with Vue.js and JavaScript for the past 3+ years, so I started this 
 
 There were a couple of challenges with the APIs recommended by Frontend Mentor, so I had to pivot from [World Time API](http://worldtimeapi.org/) to [Time API](https://timeapi.io/) in order to set the time based on the visitor's IP address, and from [Programming Quotes API](https://programming-quotes-api.herokuapp.com/) to [Quotable](https://github.com/lukePeavey/quotable) to get the quotes. I also used another API that wasn't on the list, [ipify API](https://api.ipify.org?format=json) to get the IP address.
 
-This was also the first time I used Vite to setup a project, so that was another tiny learning curve as well (rip create-react-app, you'll be missed).
+Edit: I had to remove the API call to Quotable because the HTTPS certificate expired. Since a bunch of the free quote APIs are no longer working, I downloaded the JSON from [Programming Quotes API](https://github.com/mudroljub/programming-quotes-api) and called it a day. 
+
+This was also the first time I used Vite to setup a project, so that was another learning curve as well (rip create-react-app, you'll be missed).
 
 ### Continued development
 
