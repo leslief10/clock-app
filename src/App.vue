@@ -94,7 +94,9 @@ getLocation();
 </script>
 
 <template>
+    <div v-if="timeObject === undefined" class="loading"></div>
     <div
+        v-else
         class="app-container"
         :class="[backgroundClass, { 'details-visible': toggleVisibility }]"
     >
@@ -142,6 +144,10 @@ getLocation();
     background-color: darkgray;
     background-size: cover;
     background-blend-mode: multiply;
+}
+
+.loading {
+    background-color: darkgray;
 }
 
 .clock-container {
