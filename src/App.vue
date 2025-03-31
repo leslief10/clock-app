@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, provide, computed } from 'vue';
+import { getIP, getTimeData, getLocationData } from './services/api';
 import Quote from './components/Quote.vue';
 import Clock from './components/Clock.vue';
 import Button from './components/Button.vue';
 import Details from './components/Details.vue';
+import ErrorModal from './components/ErrorModal.vue';
 import {
     TimeDataKey,
     LocationDataKey,
@@ -11,7 +13,7 @@ import {
 } from './common/injectionKeys';
 import type { TimeData, LocationData } from './common/types';
 
-const userIP = ref<string>('');
+const errorMessage = ref<string>('');
 const timeObject = ref<TimeData | undefined>(undefined);
 const locationObject = ref<LocationData | undefined>(undefined);
 const toggleVisibility = ref<boolean>(false);
@@ -20,60 +22,31 @@ provide(TimeDataKey, timeObject);
 provide(LocationDataKey, locationObject);
 provide(toggleVisibilityKey, toggleVisibility);
 
-const getIP = async (): Promise<string | undefined> => {
-    const url = 'https://api.ipify.org?format=json';
+const initializeData = async (): Promise<void> => {
     try {
-        const response: Response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
+        const ip = await getIP();
+        if (!ip) {
+            throw new Error('Could not fetch IP address');
         }
-        const { ip }: { ip: string } = await response.json();
-        userIP.value = ip;
-        return userIP.value;
-    } catch (error: unknown) {
-        console.error('Error fetching IP:', error);
-    }
-};
 
-const getTime = async (): Promise<TimeData | undefined> => {
-    if (!userIP.value) {
-        await getIP();
-    }
-
-    try {
-        const url = `https://timeapi.io/api/time/current/ip?ipAddress=${userIP.value}`;
-        const response: Response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
+        const timeData = await getTimeData(ip);
+        if (!timeData) {
+            throw new Error('Could not fetch time data');
         }
-        const data: TimeData = await response.json();
-        timeObject.value = data;
-        return data;
-    } catch (error: unknown) {
-        console.error('Error fetching time info:', error);
-    }
-};
 
-const getLocation = async (): Promise<LocationData | undefined> => {
-    if (!userIP.value) {
-        await getIP();
-    }
-
-    try {
-        const url = `https://api.ipbase.com/v2/info?ip=${userIP.value}`;
-        const response: Response = await fetch(url, {
-            headers: {
-                'X-API-KEY': import.meta.env.VITE_API_KEY as string
-            }
-        });
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
+        const locationData = await getLocationData(ip);
+        if (!locationData) {
+            throw new Error('Could not fetch location data');
         }
-        const data = await response.json();
-        locationObject.value = data.data.location;
-        return data.data.location;
-    } catch (error: unknown) {
-        console.error('Error fetching location:', error);
+
+        timeObject.value = timeData;
+        locationObject.value = locationData;
+        errorMessage.value = '';
+    } catch (error) {
+        errorMessage.value =
+            error instanceof Error
+                ? error.message
+                : 'An unknown error occurred';
     }
 };
 
@@ -89,12 +62,23 @@ const backgroundClass = computed(() => {
     return 'night-background';
 });
 
-getTime();
-getLocation();
+const handleRetry = () => {
+    errorMessage.value = '';
+    initializeData();
+};
+
+initializeData();
 </script>
 
 <template>
-    <div v-if="timeObject === undefined" class="loading"></div>
+    <ErrorModal
+        :message="errorMessage"
+        :is-visible="!!errorMessage"
+        @retry="handleRetry"
+    />
+    <div v-if="timeObject === undefined" class="loading">
+        <div class="loading-spinner"></div>
+    </div>
     <div
         v-else
         class="app-container"
@@ -148,6 +132,28 @@ getLocation();
 
 .loading {
     background-color: darkgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.loading-spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 0.25rem solid #f3f3f3;
+    border-top: 0.25rem solid #555;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .clock-container {
