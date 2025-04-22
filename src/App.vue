@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, provide, computed } from 'vue';
+import { ref, provide, computed, onMounted } from 'vue';
 import { getIP, getTimeData, getLocationData } from './services/api';
 import Quote from './components/Quote.vue';
 import Clock from './components/Clock.vue';
@@ -21,6 +21,10 @@ const toggleVisibility = ref<boolean>(false);
 provide(TimeDataKey, timeObject);
 provide(LocationDataKey, locationObject);
 provide(toggleVisibilityKey, toggleVisibility);
+
+onMounted(async (): Promise<void> => {
+    initializeData();
+});
 
 const initializeData = async (): Promise<void> => {
     try {
@@ -66,8 +70,6 @@ const handleRetry = () => {
     errorMessage.value = '';
     initializeData();
 };
-
-initializeData();
 </script>
 
 <template>
