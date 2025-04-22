@@ -22,7 +22,7 @@ export const getTimeData = async (
 ): Promise<TimeData | undefined> => {
     try {
         const url = `https://timeapi.io/api/time/current/ip?ipAddress=${ipAddress}`;
-        const response: Response = await fetch(url);
+        const response: Response = await fetch(url, { cache: 'force-cache' });
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
