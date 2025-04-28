@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, provide, computed, onMounted } from 'vue';
-import { getIP, getTimeData, getLocationData } from './services/api';
+import { getIP, getTimeAndLocationData } from './services/api';
 import Quote from './components/Quote.vue';
 import Clock from './components/Clock.vue';
 import Button from './components/Button.vue';
@@ -33,18 +33,13 @@ const initializeData = async (): Promise<void> => {
             throw new Error('Could not fetch IP address');
         }
 
-        const timeData = await getTimeData(ip);
-        if (!timeData) {
+        const data = await getTimeAndLocationData(ip);
+        if (!data) {
             throw new Error('Could not fetch time data');
         }
 
-        const locationData = await getLocationData(ip);
-        if (!locationData) {
-            throw new Error('Could not fetch location data');
-        }
-
-        timeObject.value = timeData;
-        locationObject.value = locationData;
+        timeObject.value = data.time_zone;
+        locationObject.value = data.location;
         errorMessage.value = '';
     } catch (error) {
         errorMessage.value =
@@ -59,10 +54,10 @@ const handleToggle = (value: boolean) => {
 };
 
 const backgroundClass = computed(() => {
-    const hour = timeObject.value?.hour;
+    const hour = timeObject.value?.time_24.split(':')[0];
 
     if (hour === undefined) return 'no-background';
-    if (hour >= 5 && hour < 18) return 'day-background';
+    if (hour >= '05' && hour < '18') return 'day-background';
     return 'night-background';
 });
 

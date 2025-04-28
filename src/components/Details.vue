@@ -10,22 +10,24 @@ const dayOfWeek = ref<number>(0);
 const weekOfYear = ref<number>(0);
 const fullTimeInfo = inject<Ref<TimeData | undefined>>(TimeDataKey);
 const toggleVisibility = inject<Ref<boolean>>(toggleVisibilityKey, ref(false));
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const [hour, minutes, seconds] = fullTimeInfo?.value?.time_24.split(':') ?? '';
 
 const getDayOfYear = (): number | undefined => {
-    if (!fullTimeInfo?.value?.dateTime) return;
-    dayOfYear.value = moment(fullTimeInfo.value.dateTime).dayOfYear();
+    if (!fullTimeInfo?.value?.date_time_ymd) return;
+    dayOfYear.value = moment(fullTimeInfo.value.date_time_ymd).dayOfYear();
     return dayOfYear.value;
 };
 
 const getdayOfWeek = (): number | undefined => {
-    if (!fullTimeInfo?.value?.dateTime) return;
-    dayOfWeek.value = moment(fullTimeInfo.value.dateTime).isoWeekday();
+    if (!fullTimeInfo?.value?.date_time_ymd) return;
+    dayOfWeek.value = moment(fullTimeInfo.value.date_time_ymd).isoWeekday();
     return dayOfWeek.value;
 };
 
 const getWeekOfYear = (): number | undefined => {
-    if (!fullTimeInfo?.value?.dateTime) return;
-    weekOfYear.value = moment(fullTimeInfo.value.dateTime).isoWeek();
+    if (!fullTimeInfo?.value?.week) return;
+    weekOfYear.value = fullTimeInfo?.value?.week;
     return weekOfYear.value;
 };
 
@@ -43,21 +45,18 @@ watch(toggleVisibility, (newValue) => {
 });
 
 const timeZone = computed(() => {
-    const timeZone = fullTimeInfo?.value?.timeZone?.replace(/_/g, ' ') ?? '';
+    const timeZone = fullTimeInfo?.value?.name?.replace(/_/g, ' ') ?? '';
     return timeZone;
 });
 
 const textColor = computed(() => {
-    const hour = fullTimeInfo?.value?.hour;
     if (hour === undefined) return '';
-    return hour >= 18 || hour < 5 ? 'light' : 'dark';
+    return hour >= '18' || hour < '05' ? 'light' : 'dark';
 });
 
 const backgroundClass = computed(() => {
-    const hour = fullTimeInfo?.value?.hour;
-
     if (hour === undefined) return '';
-    if (hour >= 5 && hour < 18) return 'details-day-background';
+    if (hour >= '05' && hour < '18') return 'details-day-background';
     return 'details-night-background';
 });
 </script>
