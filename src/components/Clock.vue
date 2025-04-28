@@ -8,20 +8,22 @@ import type { TimeData, LocationData, GreetingConfig } from '../common/types';
 
 const fullTimeInfo = inject<Ref<TimeData | undefined>>(TimeDataKey);
 const fullLocationInfo = inject<Ref<LocationData | undefined>>(LocationDataKey);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const [hour, minutes, seconds] = fullTimeInfo?.value?.time_24.split(':') ?? '';
 
 const showTime = computed(() => {
-    const time = fullTimeInfo?.value?.time ?? '';
+    const time = `${hour}:${minutes}`;
     return time;
 });
 
 const showLocation = computed(() => {
-    const location = `in ${fullLocationInfo?.value?.city?.name ?? ''}, ${fullLocationInfo?.value?.country?.alpha2 ?? ''}`;
+    const location = `in ${fullLocationInfo?.value?.city ?? ''}, ${fullLocationInfo?.value?.country_code2 ?? ''}`;
     return location;
 });
 
-const getGreetingAndIcon = (hour: number | undefined): GreetingConfig => {
+const getGreetingAndIcon = (hour: string | undefined): GreetingConfig => {
     if (hour !== undefined) {
-        if (hour >= 5 && hour < 12) {
+        if (hour >= '05' && hour < '12') {
             return window.innerWidth >= 768
                 ? {
                       greeting: `Good Morning, it's currently`,
@@ -31,7 +33,7 @@ const getGreetingAndIcon = (hour: number | undefined): GreetingConfig => {
                       greeting: 'Good Morning',
                       icon: `${sunIcon}`
                   };
-        } else if (hour >= 12 && hour < 18) {
+        } else if (hour >= '12' && hour < '18') {
             return window.innerWidth >= 768
                 ? {
                       greeting: `Good Afternoon, it's currently`,
@@ -58,12 +60,12 @@ const getGreetingAndIcon = (hour: number | undefined): GreetingConfig => {
 };
 
 const showGreeting = computed(() => {
-    const { greeting } = getGreetingAndIcon(fullTimeInfo?.value?.hour);
+    const { greeting } = getGreetingAndIcon(hour);
     return greeting;
 });
 
 const showGreetingIcon = computed(() => {
-    const { icon } = getGreetingAndIcon(fullTimeInfo?.value?.hour);
+    const { icon } = getGreetingAndIcon(hour);
     return icon;
 });
 </script>
