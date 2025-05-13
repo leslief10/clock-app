@@ -8,8 +8,7 @@ import type { TimeData, LocationData, GreetingConfig } from '../common/types';
 
 const fullTimeInfo = inject<Ref<TimeData | undefined>>(TimeDataKey);
 const fullLocationInfo = inject<Ref<LocationData | undefined>>(LocationDataKey);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const [hour, minutes, seconds] = fullTimeInfo?.value?.time_24.split(':') ?? '';
+const [hour, minutes] = fullTimeInfo?.value?.time_24.split(':') ?? '';
 
 const showTime = computed(() => {
     const time = `${hour}:${minutes}`;

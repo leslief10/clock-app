@@ -10,8 +10,7 @@ const dayOfWeek = ref<number>(0);
 const weekOfYear = ref<number>(0);
 const fullTimeInfo = inject<Ref<TimeData | undefined>>(TimeDataKey);
 const toggleVisibility = inject<Ref<boolean>>(toggleVisibilityKey, ref(false));
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const [hour, minutes, seconds] = fullTimeInfo?.value?.time_24.split(':') ?? '';
+const [hour] = fullTimeInfo?.value?.time_24.split(':') ?? '';
 
 const getDayOfYear = (): number | undefined => {
     if (!fullTimeInfo?.value?.date_time_ymd) return;
