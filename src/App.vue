@@ -99,7 +99,7 @@ const handleRetry = () => {
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    height: 100vh;
+    min-height: 100dvh;
 }
 
 .details-visible {
