@@ -52,6 +52,8 @@ There were a couple of challenges with the APIs recommended by Frontend Mentor, 
 
 Edit: I had to remove the API call to Quotable because the HTTPS certificate expired. Since a bunch of the free quote APIs are no longer working, I downloaded the JSON from [Programming Quotes API](https://github.com/mudroljub/programming-quotes-api) and called it a day. 
 
+Edit 2: I removed the calls to [Time API](https://timeapi.io/) and [IPBase](https://ipbase.com/) because Time API was slow to return data. Initially I tried using caching and a couple other things to make it faster, but it would still be roughly 6 seconds before the app would load, and considering this is a pretty basic app, that was way too much time. I decided to go with [IP Geolocation API](https://app.ipgeolocation.io).
+
 This was also the first time I used Vite to setup a project, so that was another learning curve as well (rip create-react-app, you'll be missed).
 
 ### Continued development
